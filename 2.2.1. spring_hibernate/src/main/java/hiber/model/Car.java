@@ -10,24 +10,21 @@ import java.util.Objects;
 @Table(name = "cars")
 public class Car {
     @Id
-    @GeneratedValue
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private String model;
     @Column
     private int series;
-    @OneToOne (mappedBy = "users")
-    private User user;
 
+
+
+    public Car() {
+    }
 
     public Car(String model, int series) {
         this.model = model;
         this.series = series;
-    }
-
-    public Car() {
-
     }
 
     public int getId() {
@@ -54,13 +51,6 @@ public class Car {
         this.series = series;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -79,11 +69,9 @@ public class Car {
 
     @Override
     public String toString() {
-        return "\nCar{" +
-                "id=" + id +
-                ", model='" + model + '\'' +
+        return "Car{" +
+                "model='" + model + '\'' +
                 ", series=" + series +
-                ", user=" + user +
                 '}';
     }
 }

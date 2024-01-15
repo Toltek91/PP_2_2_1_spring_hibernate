@@ -9,19 +9,34 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.List;
 
 public class MainApp {
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
 
         UserService userService = context.getBean(UserService.class);
-        User user1 = new User("Mike", "Sokolov", "mike_sok1@mail.ru",new Car("bmw",5));
-        User user2 = new User("Andrew", "Barton", "adnrew-bar@gamil.com", new Car("audi", 2));
-        User user3 = new User("Nick", "Volt", "nickV@outlook.com",new Car("toyota",8));
-        User user4 = new User("Rick", "Morty", "rick_mp@gmail.com",new Car("skoda",4));
-        userService.add(user1);
-        userService.add(user2);
-        userService.add(user3);
-        userService.add(user4);
+
+
+
+
+
+
+        Car car1 = new Car("bmw", 1);
+        Car car2 = new Car("audi", 2);
+        Car car3 = new Car("skoda", 5);
+        Car car4 = new Car("nissan", 7);
+
+        User user1 = new User("Mike", "Sokolov", "mike_sok1@mail.ru",car1);
+        User user2 = new User("Andrew", "Barton", "adnrew-bar@gamil.com",car2);
+        User user3 = new User("Nick", "Volt", "nickV@outlook.com",car3);
+        User user4 = new User("Rick", "Morty", "rick_mp@gmail.com",car4);
+
+
+        userService.add(user1,car1);
+        userService.add(user2,car2);
+        userService.add(user3,car3);
+        userService.add(user4,car4);
+
+
 
 
         List<User> users = userService.listUsers();
@@ -33,7 +48,7 @@ public class MainApp {
             System.out.println("Car = " + user.getCar());
             System.out.println("-------------------------------");
         }
-        //userService.findUser("bmw", 5);
-        context.close();
+       userService.getUserCar("audi", 2);
+       context.close();
     }
 }

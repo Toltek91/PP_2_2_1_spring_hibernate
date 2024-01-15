@@ -10,8 +10,7 @@ import java.util.Objects;
 public class User {
 
    @Id
-   @GeneratedValue
-   @NotNull
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
 
    @Column(name = "name")
@@ -23,8 +22,7 @@ public class User {
    @Column(name = "email")
    private String email;
 
-   @OneToOne( fetch = FetchType.LAZY)
-   @JoinColumn(name = "car_id")
+   @OneToOne
    private Car car;
 
 
@@ -94,12 +92,12 @@ public class User {
 
    @Override
    public String toString() {
-      return "\nUser{" +
+      return "User{" +
               "id=" + id +
               ", firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
               ", email='" + email + '\'' +
-              ", car=" + car +
+              ", Car=" + car +
               '}';
    }
 }

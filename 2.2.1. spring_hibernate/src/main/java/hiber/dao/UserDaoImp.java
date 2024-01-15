@@ -1,13 +1,13 @@
 package hiber.dao;
 
 import hiber.model.User;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+import hiber.model.Car;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -19,8 +19,10 @@ public class UserDaoImp implements UserDao {
 
 
     @Override
-    public void add(User user) {
+    @Transactional
+    public void add(User user, Car car) {
         sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().save(car);
     }
 
 
@@ -33,10 +35,11 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User findUser(String car_name, int car_series) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from User where Car.model =:paramName and Car.series=:paramSer");
-        query.setParameter("paramName", car_name);
-        query.setParameter("paramSer", car_series);
-        return (User) query.getResultList();
+    public void getUserCar(String model, int series) {
+        String hql = "Select user FROM User user JOIN FETCH user.car car WHERE car.model= :model AND car.series = :series";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("model", model);
+        query.setParameter("series", series);
+        System.out.println(query.getResultList());
     }
 }
