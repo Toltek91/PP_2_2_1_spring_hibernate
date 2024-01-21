@@ -1,12 +1,10 @@
 package hiber.dao;
 
-import hiber.model.User;
-import hiber.model.Car;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import hiber.model.Car;
+import hiber.model.User;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -14,32 +12,32 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
 
+    private final SessionFactory sessionFactory;
+
+    public UserDaoImp(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
-    @Transactional
-    public void add(User user, Car car) {
+    public void add(User user) {
         sessionFactory.getCurrentSession().save(user);
-        sessionFactory.getCurrentSession().save(car);
     }
 
 
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("FROM User");
+        TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User");
         return query.getResultList();
-
     }
 
     @Override
-    public void getUserCar(String model, int series) {
-        String hql = "Select user FROM User user JOIN FETCH user.car car WHERE car.model= :model AND car.series = :series";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("model", model);
-        query.setParameter("series", series);
-        System.out.println(query.getResultList());
+    @SuppressWarnings("unchecked")
+    public User getUserCar(String model, int series) {
+        String hql = "FROM User user  WHERE user.car.model= :model AND user.car.series = :series";
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("model", model).setParameter("series", series);
+        return query.getSingleResult();
     }
 }

@@ -1,6 +1,5 @@
 package hiber.model;
 
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,18 +10,19 @@ public class User {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int id;
+   private Long id;
 
-   @Column(name = "name")
+   @Column
    private String firstName;
 
-   @Column(name = "lastname")
+   @Column
    private String lastName;
 
-   @Column(name = "email")
+   @Column
    private String email;
 
-   @OneToOne
+   @OneToOne (cascade = CascadeType.ALL)
+   @JoinColumn(name = "car_id")
    private Car car;
 
 
@@ -30,18 +30,18 @@ public class User {
    public User() {
    }
 
-   public User(String firstName, String lastName, String email, Car car) {
+   public User(String firstName, String lastName, String email,Car car) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
       this.car = car;
    }
 
-   public int getId() {
+   public Long getId() {
       return id;
    }
 
-   public void setId(int id) {
+   public void setId(Long id) {
       this.id = id;
    }
 
@@ -97,7 +97,7 @@ public class User {
               ", firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
               ", email='" + email + '\'' +
-              ", Car=" + car +
+              ", Car" + car.toString()+ '\'' +
               '}';
    }
 }
